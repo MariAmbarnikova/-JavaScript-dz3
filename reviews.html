@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        body {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        a {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .product {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #fff;
+            border: 1px solid #d1d1d1;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .reviews {
+            margin-left: 20px;
+        }
+
+        .reviewsActiv {
+            display: none;
+        }
+
+        .reviews p {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border: 1px solid #d1d1d1;
+            border-radius: 4px;
+        }
+
+        .remove {
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        .remove:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="./index.html">Добавить отзов</a>
+    <div class="products"></div>
+    <script>
+        //Добавление название товара
+        const products = document.querySelector('.products');
+        const reviews = JSON.parse(localStorage.getItem('reviews'));
+        for (const key in reviews) {
+            const htmlNameProduct = `
+        <div class="product">
+          <h2 class="product__h2">${key}</h2>
+          <div class="reviews" id="${key}"></div>
+        </div>
+        `;
+            products.insertAdjacentHTML('beforeend', htmlNameProduct);
+
+            //Добавление отзывов
+            for (const el of reviews[key]) {
+                const review = document.querySelector(`#${key}`);
+
+                const htmlReview = `
+          <p class='${reviews[key].indexOf(
+                    el
+                )}'>${el} <button class='remove' onclick='removeReview(this)'>Х</button></p>
+          `;
+                review.insertAdjacentHTML('beforeend', htmlReview);
+            }
+        }
+        const a = [];
+        a.indexOf();
+
+        // Удаление отзыва
+        function removeReview(el) {
+            for (const key in reviews) {
+                if (key === el.parentNode.parentNode.id) {
+                    const element = reviews[key];
+                    console.log();
+                    reviews[key].splice(el.parentNode.className, 1);
+                    localStorage.setItem('reviews', JSON.stringify(reviews));
+                    return el.parentNode.remove();
+                }
+            }
+        }
+
+        //При клике на название продукта отображается/скрывается список всех отзывов по этому продукту.
+        const arrProduct = document.querySelectorAll('.product');
+        arrProduct.forEach((el) => {
+            el.addEventListener('click', (e) => {
+                if (event.target.tagName !== 'BUTTON' && event.target.tagName !== 'P')
+                    console.log(el.childNodes[3].classList.toggle('reviewsActiv'));
+            });
+        });
+    </script>
+</body>
+
+</html>
